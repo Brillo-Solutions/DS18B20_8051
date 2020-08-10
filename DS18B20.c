@@ -35,10 +35,10 @@ void writeToSlave(char mByte) // Writing byte to I2C slave
  }
 }
 
-void writeToI2C(char codeROM, char mByte)
+void writeToI2C(char mAddr, char mByte)
 {
   startI2C();
-  writeToSlave(codeROM);
+  writeToSlave(mAddr);
   writeToSlave(mByte);
   stopI2C();
 }
