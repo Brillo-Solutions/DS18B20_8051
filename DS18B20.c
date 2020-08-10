@@ -35,10 +35,10 @@ void writeToSlave(char mByte) // Writing byte to I2C slave
  }
 }
 
-void writeToI2C(char mAddr, char mByte)
+void writeToI2C(char codeROM, char mByte)
 {
   startI2C();
-  writeToSlave(mAddr);
+  writeToSlave(codeROM);
   writeToSlave(mByte);
   stopI2C();
 }
@@ -181,6 +181,17 @@ void readScratchPad()
     mArr[k] = getByte();
 }
 
+void writeScratchPad(char mByte)
+{
+  putByte(0x4E); // Write scratchpad
+  putByte(mByte); // Byte to writw on scratchpad
+}
+
+void copyScratchPad()
+{
+  putByte(0x48); // Copy scratchpad byte to respective EEPROM location
+}
+
 void convTemperature()
 {
   putByte(0x44); // Start temperature conversion to be placed on scratchpad
@@ -220,6 +231,10 @@ void main()
   setBackLight(1); // Turning ON backlight
   initDisplay(); // Initializing LCD for 4-bit mode
   readROM(); // Read 64-bit unique ROM code
+//  skipROM();
+//  writeScratchPad(0x25); // Call this function if you want to update 2nd, 3rd or 4th register
+//  skipROM();
+//  copyScratchPad(); // Call this function if you want to trasnfer 2nd, 3rd or 4th register's data on EEPROM
   for (;;)
   {
     xByte = yByte = readTemperature();
